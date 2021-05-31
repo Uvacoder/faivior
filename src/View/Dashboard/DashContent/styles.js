@@ -1,10 +1,15 @@
 import Styled from 'styled-components'
-import { minQuery } from '../../../helpers'
+import { minQuery, maxQuery } from '../../../helpers'
 
 export default Styled.div`
 margin: 0px 2.5em;
-margin-top: 2em;
 height: calc(100% - 2em);
+margin-top: 2em;
+${maxQuery('<md')} {
+    margin: 0px 1em;
+    margin-top: 2em;
+}
+
 /* padding: 1em 1.5em; */
 div.top--bar {
     display: flex;

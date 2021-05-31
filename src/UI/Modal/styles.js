@@ -28,6 +28,7 @@ export default Styled.div`
         box-shadow: 0px 0px 30px #00000029;
         border-radius: 5px;
         width: ${rem('720px')};
+        max-width: 90vw;
         position: relative;
         button.close-btn {
             position: absolute;
