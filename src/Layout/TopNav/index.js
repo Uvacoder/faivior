@@ -36,6 +36,7 @@ const TopNav = ({ handleAltNavDisplay, showSideNav }) => {
         >
           <FiMenu />
         </Button>
+        <h2>Demo</h2>
       </div>
       <div className="col--2">
         <img

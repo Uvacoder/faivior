@@ -31,7 +31,7 @@ export default Styled.div`
         .icon {
             margin-right: 1em;
             font-size: 1.3rem;
-            color: #999999;
+            color: #273240;
         }
     }
     div.col--2 {
