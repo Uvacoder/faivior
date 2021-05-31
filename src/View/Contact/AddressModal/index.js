@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { v4 as uuid } from 'uuid'
+import toast from 'react-hot-toast'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { formValidator } from '../../../helpers'
@@ -44,7 +45,6 @@ const AddressModal = () => {
         ...document.forms['address--modal__form'].getElementsByTagName('input'),
       ])
     ) {
-      console.log(addressId, 'sdjsdkj')
       let contactIndex, addressIndex
       contactIndex = contactLists.findIndex((item) => item.id === contactId)
       if (addressId === 'new') {
@@ -56,6 +56,13 @@ const AddressModal = () => {
         contactLists[contactIndex].address[addressIndex] = formData
       }
       setLoading(true)
+      setTimeout(() => {
+        toast.success(
+          addressId === 'new'
+            ? 'Successfully Added Address'
+            : 'Successfully Updated Address',
+        )
+      }, 400)
       setTimeout(() => {
         setLoading(false)
         dispatch(altAddress(contactLists))

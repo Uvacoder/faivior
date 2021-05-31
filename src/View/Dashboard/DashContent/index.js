@@ -8,7 +8,6 @@ import Container from './styles'
 const Settings = () => {
   const { pathname, search } = useLocation()
   let query = useQuery().get('tab')
-  console.log(query, 'sdksldksdlk')
   const content = () => {
     switch (query) {
       case 'contact':

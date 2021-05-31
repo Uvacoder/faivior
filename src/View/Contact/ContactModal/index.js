@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { v4 as uuid } from 'uuid'
+import toast from 'react-hot-toast'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import { altContactData } from '../../../store/actions/app'
@@ -52,10 +53,16 @@ const AddressModal = () => {
         contactLists.push(formData)
       }
       setTimeout(() => {
+        toast.success(
+          action === 'new'
+            ? 'Successfully Added Contact'
+            : 'Successfully Updated Contact',
+        )
+      }, 400)
+      setTimeout(() => {
         setLoading(false)
         dispatch(altContactData(contactLists))
         history.goBack()
-        console.log(document.getElementById(formData.id), 'dhsdkj')
         document.getElementById(formData.id).scrollIntoView()
       }, 500)
     }
