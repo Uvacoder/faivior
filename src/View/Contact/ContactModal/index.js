@@ -1,34 +1,33 @@
 import React, { useState } from 'react'
 import { v4 as uuid } from 'uuid'
-import { useRouteMatch, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useRouteMatch, useHistory } from 'react-router-dom'
+import { altContactData } from '../../../store/actions/app'
 import { formValidator } from '../../../helpers'
-import { altAddress } from '../../../store/actions/app'
 import Container from './styles'
 import { Button, InputGroup, Modal } from '../../../UI'
 
 const AddressModal = () => {
   const dispatch = useDispatch()
   const {
-    params: { addressId, contactId },
+    params: { action },
   } = useRouteMatch()
   const history = useHistory()
-  const { contactLists } = useSelector((state) => state.contact)
-
   const [loading, setLoading] = useState(false)
+  const { contactLists } = useSelector((state) => state.contact)
   const [formData, setFormState] = useState(() =>
-    addressId !== 'new'
-      ? contactLists
-          .find((item) => item.id === contactId)
-          .address.find((item) => item.id === addressId)
-      : {
+    action === 'new'
+      ? {
           id: uuid(),
-          streetNo: '',
-          streetName: '',
-          state: '',
+          surName: '',
+          firstName: '',
+          email: '',
+          phoneNo: '',
           latitude: '',
           longitude: '',
-        },
+          address: [],
+        }
+      : contactLists.find((item) => item.id === action),
   )
 
   const handleInput = ({ target }) => {
@@ -44,22 +43,20 @@ const AddressModal = () => {
         ...document.forms['address--modal__form'].getElementsByTagName('input'),
       ])
     ) {
-      console.log(addressId, 'sdjsdkj')
-      let contactIndex, addressIndex
-      contactIndex = contactLists.findIndex((item) => item.id === contactId)
-      if (addressId === 'new') {
-        contactLists[contactIndex].address.push(formData)
-      } else {
-        addressIndex = contactLists[contactIndex].address.findIndex(
-          (item) => item.id === formData.id,
-        )
-        contactLists[contactIndex].address[addressIndex] = formData
-      }
       setLoading(true)
+      let index
+      if (action !== 'new') {
+        index = contactLists.findIndex((item) => item.id === action)
+        contactLists[index] = formData
+      } else {
+        contactLists.push(formData)
+      }
       setTimeout(() => {
         setLoading(false)
-        dispatch(altAddress(contactLists))
+        dispatch(altContactData(contactLists))
         history.goBack()
+        console.log(document.getElementById(formData.id), 'dhsdkj')
+        document.getElementById(formData.id).scrollIntoView()
       }, 500)
     }
   }
@@ -68,14 +65,14 @@ const AddressModal = () => {
     <Container>
       <Modal
         showModal={true}
-        modalTitle={`${addressId === 'new' ? 'Add' : 'Edit'} Address`}
+        modalTitle={`${action === 'new' ? 'Add' : 'Edit'} Contact Detail`}
         className={'modal--size__sm'}
         modalFooter={
           <Button
-            full
             loading={loading}
-            type="submit"
+            full
             spinnerWithTxt={true}
+            type="submit"
             form="address--modal__form"
           >
             Submit
@@ -90,28 +87,37 @@ const AddressModal = () => {
         >
           <div className="modal--content">
             <InputGroup
-              label="Street Number"
-              placeholder={'Enter your Street Number'}
+              label="SurName"
+              placeholder={'Enter your Surname'}
               required
-              name="streetNo"
-              type="number"
-              value={formData.streetNo}
+              name="firstName"
+              value={formData.firstName}
               onChange={handleInput}
             />
             <InputGroup
-              label="Street Name"
-              placeholder={'Herbelt Marculy'}
+              label="LastName"
+              placeholder={'Enter your lastName'}
               required
-              name="streetName"
-              value={formData.streetName}
+              name="lastName"
+              value={formData.lastName}
               onChange={handleInput}
             />
             <InputGroup
-              label="State of residence "
-              placeholder={'Lagos State'}
+              label="Phone Number"
+              placeholder={'Enter your phone number'}
               required
-              name="state"
-              value={formData.state}
+              type="tel"
+              name="phoneNo"
+              value={formData.phoneNo}
+              onChange={handleInput}
+            />
+            <InputGroup
+              label="Email"
+              placeholder={'Enter your email address'}
+              required
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleInput}
             />
           </div>

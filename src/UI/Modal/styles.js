@@ -1,6 +1,5 @@
 import Styled, { keyframes } from 'styled-components'
 import { rgba, rem } from 'polished'
-import { maxQuery } from '../../helpers'
 
 const slideIn = keyframes`
     0% {
@@ -42,9 +41,6 @@ export default Styled.div`
             padding: 0.1em;
             font-size: 1.5rem;
             color: ${({ theme }) => theme.primary};
-            ${maxQuery('md')} {
-                position: fixed; 
-            }
         }
         h2.modal--title {
             padding: 1em;

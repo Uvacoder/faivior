@@ -1,147 +1,122 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import toast from 'react-hot-toast'
-import {
-  singlePushNotification,
-  broadCastPushNotification,
-} from '../../store/actions/notification.js'
+import { GoLocation } from 'react-icons/go'
+import { FiEdit } from 'react-icons/fi'
+import { RiDeleteBin3Fill } from 'react-icons/ri'
+import { useHistory, Route } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { altAddress } from '../../store/actions/app'
 import AddressModal from './AddressModal'
-import { formValidator } from '../../helpers'
+import ContactModal from './ContactModal'
 import Container from './styles'
-import { Button, InputGroup } from '../../UI'
+import { Button } from '../../UI'
 
 const Contacts = () => {
+  const [loading, setLoading] = useState([])
+  const history = useHistory()
   const dispatch = useDispatch()
-  const [loading, setLoading] = useState(false)
-  const [{ showModal }, setDisplay] = useState({
-    showModal: false,
-  })
-  const [formData, setFormState] = useState({
-    name: '',
-    phoneNo: '',
-    email: '',
-    address: [],
-  })
+  const { contactLists } = useSelector((state) => state.contact)
 
-  const handleInput = ({ target }) => {
-    setFormState((s) => ({
-      ...s,
-      [target.name]: target.value,
-    }))
+  const handleDeleteAddress = (addressId, contactId) => {
+    setLoading((s) => [...s, addressId])
+    setTimeout(() => {
+      const newContactLists = [...contactLists]
+      const index = newContactLists.findIndex((item) => item.id === contactId)
+      newContactLists[index].address = contactLists[index].address.filter(
+        (item) => item.id !== addressId,
+      )
+      dispatch(altAddress(newContactLists))
+      setLoading((s) => s.filter((item) => item !== addressId))
+    }, 400)
   }
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (
-      formValidator([
-        ...document.forms['notification--form'].getElementsByTagName('input'),
-      ])
-    ) {
-      try {
-        setLoading(true)
-        const { broadCast, intended_user, ...rest } = formData
-        const { responseCode, responseMessage } = formData.broadCast
-          ? await dispatch(broadCastPushNotification(rest))
-          : await dispatch(
-              singlePushNotification({
-                intended_user,
-                ...rest,
-              }),
-            )
-        if (responseCode === 200) {
-          toast.success('Successfully sent notification')
-        } else {
-          toast.error(responseMessage)
-        }
-      } catch (error) {
-        setLoading(false)
-      } finally {
-        setLoading(false)
-      }
-    }
-  }
-
   return (
     <>
-      {showModal && <AddressModal {...{ handleSubmit: console.log }} />}
+      <Route
+        path="/dashboard/contact/address/:contactId/:addressId"
+        component={AddressModal}
+      />
+      <Route
+        path="/dashboard/contact/detail/:action"
+        component={ContactModal}
+      />
       <Container>
         <div className="top--bar">
-          <p className="u--typo__title">Add Contact</p>
+          <p className="u--typo__title">Contacts</p>
+          <Button onClick={() => history.push('/dashboard/contact/detail/new')}>
+            Add Contact
+          </Button>
         </div>
-        <div className="notification--container">
-          <form onSubmit={handleSubmit} name="notification--form" noValidate>
-            <InputGroup
-              label="Name"
-              placeholder={'Enter your Name'}
-              required
-              name="name"
-              value={formData.name}
-              onChange={handleInput}
-            />
-            <InputGroup
-              label="Phone Number"
-              placeholder={'Enter your phone number'}
-              required
-              type="tel"
-              name="phoneNo"
-              value={formData.phoneNo}
-              onChange={handleInput}
-            />
-            <InputGroup
-              label="Email"
-              placeholder={'Enter your email address'}
-              required
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInput}
-            />
-            {formData.address.length > 0 && (
-              <>
-                <InputGroup>
-                  <label>Address</label>
-                </InputGroup>
-                <div className="address--list__container">
-                  {formData.address.map((item) => (
-                    <div>
-                      <p>
-                        <strong>Street name</strong>
-                      </p>
-                      <p>sjdksjdsdkjsd</p>
+        <div className="contact--list">
+          <div className="container">
+            {contactLists.length === 0 && (
+              <div className="empty--list">
+                <h3>You don't have any contact added</h3>
+                <p>Click to the botton above to add a contact</p>
+              </div>
+            )}
+            {contactLists.map((item) => (
+              <div className="contact--list__item" id={item.id}>
+                <div className="contact--header">
+                  <div>
+                    <h3>
+                      {item.firstName} {item.lastName}
+                    </h3>
+                    <p>
+                      {item.phoneNo}, {item.email}
+                    </p>
+                  </div>
+                  <Button
+                    icon
+                    arial-label="edit address"
+                    onClick={() =>
+                      history.push(`/dashboard/contact/detail/${item.id}`)
+                    }
+                  >
+                    <FiEdit />
+                  </Button>
+                </div>
+                <div className="address--details">
+                  {item.address.length > 0 && <h3>Address</h3>}
+                  {item.address.map(({ streetNo, streetName, state, id }) => (
+                    <div className="address--item">
+                      <div>
+                        <GoLocation />
+                        <p
+                          onClick={() =>
+                            history.push(
+                              `/dashboard/contact/address/${item.id}/${id}`,
+                            )
+                          }
+                        >
+                          No.{streetNo} {streetName} street, {state} state
+                        </p>
+                      </div>
+                      <Button
+                        icon
+                        className="delete--btn"
+                        loading={loading.includes(id)}
+                        onClick={() => handleDeleteAddress(id, item.id)}
+                      >
+                        <RiDeleteBin3Fill color={'#FF5E5E'} />
+                      </Button>
                     </div>
                   ))}
+                  {item.address.length !== 5 && (
+                    <Button
+                      secondary
+                      small
+                      onClick={() =>
+                        history.push(
+                          `/dashboard/contact/address/${item.id}/new`,
+                        )
+                      }
+                    >
+                      Add <GoLocation />
+                    </Button>
+                  )}
                 </div>
-              </>
-            )}
-
-            {/* <InputGroup>
-            <label>Address</label>
-          </InputGroup>
-          <div className="address--group">
-            <InputGroup>
-              <div>sjdkjsdksdjs</div>
-            </InputGroup>
-            <InputGroup>
-              <div>sjdkjsdksdjs</div>
-            </InputGroup>
-            <InputGroup>
-              <div>sjdkjsdksdjs</div>
-            </InputGroup>
-            <InputGroup>
-              <div>sjdkjsdksdjs</div>
-            </InputGroup>
-          </div> */}
-            <footer>
-              <Button
-                tertiary
-                onClick={() => setDisplay((s) => ({ ...s, showModal: true }))}
-              >
-                Add address
-              </Button>
-              <Button type="submit" loading={loading}>
-                Submit
-              </Button>
-            </footer>
-          </form>
+              </div>
+            ))}
+          </div>
         </div>
       </Container>
     </>

@@ -1,11 +1,8 @@
 import { combineReducers } from 'redux'
-import UserData from './reducers/User'
-import DashStats from './reducers/DashStats'
-
+import Contact from './reducers/Contact'
 
 const rootReducer = combineReducers({
-  user: UserData,
-  dashStats: DashStats
+  contact: Contact,
 })
 
 export default rootReducer

@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 import { normalize, rgba, rem } from 'polished'
-import { maxQuery, minQuery } from '../helpers'
+import { maxQuery } from '../helpers'
 
 export default createGlobalStyle`
     ${normalize};

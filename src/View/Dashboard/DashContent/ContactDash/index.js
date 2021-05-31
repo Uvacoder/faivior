@@ -1,18 +1,20 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import Columns from './columns'
 import { MaterialTable } from '../../../../lib'
 
 import Container from './styles'
 
 const ContactDash = () => {
-  const contacts = []
+  const { contactLists } = useSelector((state) => state.contact)
+
   return (
     <Container>
-      <div className="company--table__container">
+      <div className="contact--table__container">
         <MaterialTable
           columns={Columns()}
-          data={contacts ? contacts : []}
-          isLoading={!contacts ? true : false}
+          data={contactLists ? contactLists : []}
+          isLoading={!contactLists ? true : false}
         />
       </div>
     </Container>

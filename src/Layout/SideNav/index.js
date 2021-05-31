@@ -1,11 +1,9 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { AiOutlineUserSwitch } from 'react-icons/ai'
 import { BiHomeAlt } from 'react-icons/bi'
 import { FiMenu } from 'react-icons/fi'
 import { Button } from '../../UI'
-import logo from '../../assets/logo.png'
 import Container from './styles'
 
 const SideNav = ({
@@ -14,9 +12,6 @@ const SideNav = ({
   showSideNav,
   handleAltNavDisplay,
 }) => {
-  const {
-    userData: { admin },
-  } = useSelector((state) => state.user)
   const handleToggleSideBar = () => {
     if (isMobile && showSideNav) {
       setDisplay(false)

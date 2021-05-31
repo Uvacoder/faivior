@@ -1,10 +1,8 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Route, NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useQuery } from '../../../hooks'
 import MapDash from './MapDash'
 import ContactDash from './ContactDash'
-// import { CompanyProfile, ResetPassword } from '../../View'
 import Container from './styles'
 
 const Settings = () => {

@@ -38,8 +38,8 @@ export default Styled.div`
                 /* padding-bottom: 0.05em; */
             }
         }
-        img {
-            width: 7.5rem;
+        h2 {
+            color: #fff;
         }
     }
     nav {

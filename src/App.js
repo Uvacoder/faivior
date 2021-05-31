@@ -13,12 +13,11 @@ const App = () => {
       <GlobalStyle />
       <Toaster />
       <IconContext.Provider value={{ className: 'icon' }}>
-        {/* <Dashboard /> */}
         <Switch>
           <Route path="/" exact={true}>
-            <Redirect to="/Dashboard" />
+            <Redirect to="/dashboard/?tab=contact" />
           </Route>
-          <Route path="/Dashboard" component={Dashboard} />
+          <Route path="/dashboard" component={Dashboard} />
         </Switch>
       </IconContext.Provider>
     </ThemeProvider>
