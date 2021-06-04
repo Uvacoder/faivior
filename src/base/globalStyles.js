@@ -50,7 +50,6 @@ export default createGlobalStyle`
         
        #nprogress .bar {
          background: #fff;
-        /* background: ${({ theme }) => theme.primary}; */
         height: 3px;
       }
 

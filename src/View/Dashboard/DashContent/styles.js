@@ -10,7 +10,6 @@ ${maxQuery('<md')} {
     margin-top: 2em;
 }
 
-/* padding: 1em 1.5em; */
 div.top--bar {
     display: flex;
     flex-direction: row;
@@ -26,7 +25,6 @@ div.settings--container {
     height: 80vh;
     background: #FFFFFF;
     overflow: hidden;
-    /* border: 1px solid #E6E8F1; */
     border-radius: 5px;
     header {
         padding: 1em;

@@ -3,7 +3,6 @@ import { css } from 'styled-components'
 const ScrollBar = css`
   & {
     scrollbar-width: thin;
-    /* scrollbar-color: #eaeaea; */
     scrollbar-color: transparent;
   }
   &::-webkit-scrollbar {
@@ -20,7 +19,6 @@ const ScrollBar = css`
   }
   &:hover {
     &::-webkit-scrollbar-track {
-      /* background: #eaeaea; */
       background: transparent;
     }
     &::-webkit-scrollbar-thumb {

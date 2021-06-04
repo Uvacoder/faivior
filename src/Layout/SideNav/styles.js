@@ -1,6 +1,5 @@
 import Styled from 'styled-components'
-import { rgba, rem } from 'polished'
-import { maxQuery } from '../../helpers/media'
+import { rem } from 'polished'
 
 export default Styled.div`
     width: ${({ theme }) => rem(theme.sideNavWidth)};
@@ -9,21 +8,6 @@ export default Styled.div`
     height: 100%;
     z-index: 999;
     background: #273240;
-    ${maxQuery('lg')} {
-        /* &:after {
-            content: "";
-            width: ${({ theme }) => `calc(100vw - ${rem(theme.sideNavWidth)})`};
-            height: 100vh;
-            display: block;
-            top: 0px;
-            left: ${({ theme }) => rem(theme.sideNavWidth)};
-            z-index: 5;
-            position: absolute;
-            background: ${rgba('#707070', 0.5)};
-            backdrop-filter: blur(0.7px);
-            -webkit-backdrop-filter: blur(0.7px);
-        } */
-    }
     header {
         display: flex;
         align-items: center;
@@ -35,7 +19,6 @@ export default Styled.div`
             .icon {
                 color: #fff;
                 font-size: 1.3rem;
-                /* padding-bottom: 0.05em; */
             }
         }
         h2 {
@@ -58,7 +41,6 @@ export default Styled.div`
             align-items: center;
             font-weight: 600;
             color: #ffff;;
-            /* box-shadow: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%); */
             border-radius: 6px;
             &:hover {
                 color: ${({ theme }) => theme.secondary};
